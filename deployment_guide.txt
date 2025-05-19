@@ -131,7 +131,8 @@ This document outlines the step-by-step process for deploying the MERN (MongoDB,
      - Sign in to your Azure account
      - Right-click your App Service and select "Deploy to Web App"
      - Select your project folder
-     - Confirm deployment   - Option 2: Using GitHub Actions (Recommended)
+     - Confirm deployment   
+   - Option 2: Using GitHub Actions (Recommended)
      - Push your code to a GitHub repository
      - In the Azure Portal, go to your App Service
      - Select Deployment Center → GitHub
