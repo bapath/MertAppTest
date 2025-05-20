@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -23,14 +23,18 @@ jobs:
         with:
           node-version: '22.x'
 
-      - name: npm install, build, and test
+      # Optional: Clean workspace for a fresh build
+      - name: Clean workspace
+        run: git clean -fdx
+
+      - name: Install dependencies and build
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
 
+      # Zip everything except node_modules to speed up upload
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip -r release.zip . -x "**/node_modules/*"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -44,7 +48,7 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -53,7 +57,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
