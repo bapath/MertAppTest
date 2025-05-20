@@ -8,6 +8,7 @@ const taskController = {
       const tasks = await Task.find({}).sort({ createdAt: -1 });
       res.status(200).json(tasks);
     } catch (error) {
+      console.error('Error in getAllTasks:', error); // Add this line
       res.status(500).json({ message: 'Error fetching tasks', error: error.message });
     }
   },
